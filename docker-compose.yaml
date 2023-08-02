@@ -1,0 +1,22 @@
+version: "3.1"
+
+services:
+  exchange:
+    image: harbor.intent.ai/interview/engineering
+    container_name: intent-exchange
+    environment:
+      - BIDDER_ENDPOINT=http://bidder:8080/
+    networks:
+      - intent
+    volumes:
+      - ./:/app
+  bidder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - intent
+    ports:
+      - "8080:8080"
+networks:
+  intent:
