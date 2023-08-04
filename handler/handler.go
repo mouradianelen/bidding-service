@@ -86,16 +86,16 @@ func BidRequestHandler(w http.ResponseWriter, r *http.Request) {
 
 	bidRequest = new(openrtb.BidRequest)
 	if err := json.NewDecoder(r.Body).Decode(bidRequest); err != nil {
-		log.Printf("json decode error: %s", err.Error())
+		log.Printf("Json decode error: %s", err.Error())
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("json decode error"))
+		w.Write([]byte("Json decode error"))
 		return
 	}
 	ctx = context.Background()
 
 	if len(bidRequest.Impressions) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("imp is empty"))
+		w.Write([]byte("Imp field is empty"))
 		return
 	}
 
@@ -132,7 +132,7 @@ func BidRequestHandler(w http.ResponseWriter, r *http.Request) {
 			bid1.Width = bidRequest.Device.Width
 			bid1.Height = bidRequest.Device.Height
 		}
-		bid1.AdMarkup = "miban"
+		bid1.AdMarkup = `<html><a href="//localhost"><img src="//localhost/ad.img"></a></html>`
 
 	case imp1.Audio != nil:
 	case imp1.Native != nil:
@@ -166,7 +166,7 @@ func BidRequestHandler(w http.ResponseWriter, r *http.Request) {
 		Currency:   "USD",
 		CustomData: "",
 		NBR:        0,
-		Ext:        json.RawMessage(`{"pid": "bar"}`),
+		Ext:        json.RawMessage(`{}`),
 	}
 
 	if content, err := json.Marshal(bidResponse); err == nil {
